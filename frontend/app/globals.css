@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #FAF7F0;
+  color: #20241F;
+}
+
+::selection {
+  background-color: #F0DEB8;
+}
+
+/* Signature element: the citation "bookmark tab" -- a chip shaped like a
+   little page tab, styled with a mono page number, that ties an answer
+   back to a physical page in the source document. */
+.citation-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.1rem 0.5rem 0.1rem 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: #8F5F1B;
+  background: #F0DEB8;
+  border: 1px solid #C6862B;
+  border-radius: 0 0.5rem 0.5rem 0;
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.citation-tab::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: inherit;
+  border-left: 1px solid #C6862B;
+  clip-path: polygon(100% 0, 100% 100%, 0 50%);
+}
+
+.citation-tab:hover {
+  background: #C6862B;
+  color: #FAF7F0;
+  transform: translateY(-1px);
+}
+
+.paper-texture {
+  background-image: var(--tw-gradient-grain, none);
+}
+
+@keyframes stage-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.stage-active {
+  animation: stage-pulse 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage-active {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
