@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Lora, Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/hooks/useAuth";
 import { DocumentsProvider } from "@/hooks/useDocumentsStore";
 
 const lora = Lora({
@@ -34,7 +35,9 @@ export default function RootLayout({
   return (
     <html lang="vi" className={`${lora.variable} ${inter.variable} ${plexMono.variable}`}>
       <body className="font-sans antialiased min-h-screen">
-        <DocumentsProvider>{children}</DocumentsProvider>
+        <AuthProvider>
+          <DocumentsProvider>{children}</DocumentsProvider>
+        </AuthProvider>
       </body>
     </html>
   );

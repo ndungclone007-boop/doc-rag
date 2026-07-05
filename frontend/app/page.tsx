@@ -4,17 +4,11 @@ import { Header } from "@/components/Header";
 import { UploadZone } from "@/components/UploadZone";
 import { DocumentCard } from "@/components/DocumentCard";
 import { EmptyState } from "@/components/EmptyState";
+import { RequireAuth } from "@/components/RequireAuth";
 import { useDocumentsStore } from "@/hooks/useDocumentsStore";
 
-export default function LibraryPage() {
-  const { documents, addFiles, removeDocument } = useDocumentsStore();
-
-  const handleReindex = (id: string) => {
-    // Real version: POST /documents/:id/reindex. Here, deleting and asking
-    // the user to re-upload is the honest equivalent since we don't retain
-    // the original File object once parsed.
-    removeDocument(id);
-  };
+function LibraryContent() {
+  const { documents, loading, addFiles, removeDocument, reindex } = useDocumentsStore();
 
   return (
     <div className="min-h-screen">
@@ -31,21 +25,26 @@ export default function LibraryPage() {
           <UploadZone onFiles={addFiles} />
         </div>
 
-        {documents.length === 0 ? (
+        {loading ? (
+          <p className="text-sm font-mono text-ink-soft">Đang tải danh sách tài liệu…</p>
+        ) : documents.length === 0 ? (
           <EmptyState />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {documents.map((doc) => (
-              <DocumentCard
-                key={doc.id}
-                doc={doc}
-                onDelete={removeDocument}
-                onReindex={handleReindex}
-              />
+              <DocumentCard key={doc.id} doc={doc} onDelete={removeDocument} onReindex={reindex} />
             ))}
           </div>
         )}
       </main>
     </div>
+  );
+}
+
+export default function LibraryPage() {
+  return (
+    <RequireAuth>
+      <LibraryContent />
+    </RequireAuth>
   );
 }
